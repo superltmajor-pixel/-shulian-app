@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "tool": "vite",
+  "viteVersion": "8.1.5",
+  "reactVersion": "18.3.1",
+  "format": "iife",
+  "buildId": "2026-10-03-public-portable-v26-0",
+  "sourceSha256": "d7fae79e7e8be12337c1719e7b734d36225e91b2b20981d22092046a66ada46c",
+  "bundle": "app.bundle.js",
+  "bundleBytes": 499969,
+  "bundleSha256": "49b0c80817e5ed7885b95d395622b3c41ee81dcdf6ddd4aa94d5993621eaca3c",
+  "noticesSha256": "8535a78b10954d90acb23fd85341bf20b90c7f02b887d78ec25c686a4d63425e"
+}

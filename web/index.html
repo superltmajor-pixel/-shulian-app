@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>数恋 · 数字恋人</title>
+<link rel="icon" type="image/png" href="shulian-brand-icon.png?v=2026-10-03-public-portable-v26-0" />
+<script>
+  // localStorage is scoped by hostname. Keep localhost as the canonical origin
+  // so histories created before the backend was hardened remain visible.
+  const storageMigrationPrefix = 'shulian-storage-migration:';
+  if (location.hostname === '127.0.0.1') {
+    try {
+      const stored = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('sl_')) stored[key] = localStorage.getItem(key);
+      }
+      if (Object.keys(stored).length) {
+        window.name = storageMigrationPrefix + JSON.stringify(stored);
+      }
+    } catch (e) { /* Continue to the canonical origin even if storage is unavailable. */ }
+    const target = new URL(location.href);
+    target.hostname = 'localhost';
+    location.replace(target.href);
+  } else if (location.hostname === 'localhost' && window.name.startsWith(storageMigrationPrefix)) {
+    try {
+      const stored = JSON.parse(window.name.slice(storageMigrationPrefix.length));
+      Object.entries(stored).forEach(([key, value]) => {
+        if (key.startsWith('sl_') && localStorage.getItem(key) === null && typeof value === 'string') {
+          localStorage.setItem(key, value);
+        }
+      });
+    } catch (e) { /* Preserve existing localhost data if migration data is invalid. */ }
+    window.name = '';
+  }
+
+  // Apply the saved theme before React mounts to avoid a light/dark flash.
+  const shulianThemeMedia = window.matchMedia('(prefers-color-scheme: dark)');
+  window.applyShulianTheme = (requestedMode) => {
+    const mode = ['light', 'dark', 'system'].includes(requestedMode) ? requestedMode : 'system';
+    const resolved = mode === 'system' ? (shulianThemeMedia.matches ? 'dark' : 'light') : mode;
+    document.documentElement.dataset.themeMode = mode;
+    document.documentElement.dataset.themeResolved = resolved;
+    document.documentElement.style.colorScheme = resolved;
+    return { mode, resolved };
+  };
+  window.applyShulianLanguage = (requestedLanguage) => {
+    const language = requestedLanguage === 'en' ? 'en' : 'zh-CN';
+    document.documentElement.dataset.uiLanguage = language;
+    document.documentElement.lang = language;
+    document.title = language === 'en' ? 'Shulian · Digital Companion' : '数恋 · 数字恋人';
+    window.dispatchEvent(new CustomEvent('shulian-language-change', { detail: { language } }));
+    return language;
+  };
+  let initialThemeMode = 'system';
+  let initialUiLanguage = 'zh-CN';
+  try {
+    const savedSettings = JSON.parse(localStorage.getItem('sl_settings') || '{}');
+    initialThemeMode = savedSettings?.themeMode || 'system';
+    initialUiLanguage = savedSettings?.language || 'zh-CN';
+  } catch (e) { /* Invalid settings fall back to the operating system. */ }
+  window.applyShulianTheme(initialThemeMode);
+  window.applyShulianLanguage(initialUiLanguage);
+  const syncSystemTheme = () => {
+    if (document.documentElement.dataset.themeMode === 'system') window.applyShulianTheme('system');
+  };
+  if (shulianThemeMedia.addEventListener) shulianThemeMedia.addEventListener('change', syncSystemTheme);
+  else if (shulianThemeMedia.addListener) shulianThemeMedia.addListener(syncSystemTheme);
+</script>
+<link rel="stylesheet" href="app.css" />
+</head>
+<body>
+  <div id="stage"><div id="root"></div></div>
+
+  <script defer src="bundle/app.bundle.js?v=2026-10-03-public-portable-v26-0"></script>
+
+</body>
+</html>

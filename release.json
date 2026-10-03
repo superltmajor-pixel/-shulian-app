@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "productId": "shulian",
+  "displayName": "数恋",
+  "version": "0.26.0",
+  "buildId": "2026-10-03-public-portable-v26-0",
+  "channel": "stable",
+  "publicReleaseUrl": "https://github.com/superltmajor-pixel/-shulian-app/releases",
+  "publicReleaseReady": false,
+  "platform": "windows-x64",
+  "entrypoint": "Shulian.exe",
+  "healthPath": "/api/self-check",
+  "minUpdaterVersion": "1.0.0",
+  "protectedPaths": [
+    ".env",
+    "webview-data",
+    "media",
+    "shulian-debug.log",
+    "role-library",
+    "local-data"
+  ],
+  "managedPaths": [
+    "Shulian.exe",
+    "_internal"
+  ]
+}

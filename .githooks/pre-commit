@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+if [ -f venv/Scripts/python.exe ]; then
+  exec venv/Scripts/python.exe scripts/check-public-source.py --staged
+fi
+exec python scripts/check-public-source.py --staged
