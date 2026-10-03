@@ -17,7 +17,7 @@ from public_source import private_path, public_web_file
 # in the development checkout, never in the public snapshot.
 LOCAL_ONLY = {"AGENTS.md", "AGENTS.override.md", "CLAUDE.md", "defender-codex-ab-test.txt"}
 ROOT_FILES = {
-    ".env.example", ".gitignore", "README.md", "LICENSE", "LICENSING.md",
+    ".env.example", ".gitignore", "README.md", "README.en.md", "LICENSE", "LICENSING.md",
     "COMMERCIAL_LICENSE.md", "TRADEMARKS.md", "CONTRIBUTING.md", "CLA.md",
     "THIRD_PARTY_NOTICES.md", "package.json", "package-lock.json", "release.json",
     "maintenance-manifest.json", "requirements.txt", "requirements-build.txt", "requirements-release.txt",
